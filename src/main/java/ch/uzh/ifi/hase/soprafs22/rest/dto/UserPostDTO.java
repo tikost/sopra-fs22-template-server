@@ -10,6 +10,8 @@ public class UserPostDTO {
 
   private Date creationDate;
 
+  private Birthdate birthdate;
+
   public String getName() {
     return name;
   }
@@ -22,12 +24,18 @@ public class UserPostDTO {
     return username;
   }
 
-  public Date getCreationDate() { return creationDate; }
-    public void setCreationDate(Date creationDate) {
-        this.creationDate = creationDate;
-    }
-
   public void setUsername(String username) {
     this.username = username;
   }
+
+  public Date getCreationDate() { return creationDate; }
+
+    public void setCreationDate(Date creationDate) { this.creationDate = creationDate; }
+
+    public Birthdate getBirthdate() {
+        return birthdate;
+    }
+    public void setBirthdate(Birthdate birthdate) {
+        this.birthdate = birthdate;
+    }
 }

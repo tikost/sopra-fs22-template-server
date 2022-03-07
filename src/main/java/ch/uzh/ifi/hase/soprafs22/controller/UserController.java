@@ -44,6 +44,23 @@ public class UserController {
     return userGetDTOs;
   }
 
+    @GetMapping("/users/{userId}")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public List<UserGetDTO> getUserbyId(@PathVariable long Id) {
+        // fetch all users in the internal representation
+        List<User> users = userService.getUsers();
+        List<UserGetDTO> userGetDTOs = new ArrayList<>();
+
+        // convert each user to the API representation
+        for (int i = 0; i < users.size(); i++) {
+            if (Id == (users.get(i).getId())) {
+                userGetDTOs.add(DTOMapper.INSTANCE.convertEntityToUserGetDTO(users.get(i)));
+            }
+        }
+        return userGetDTOs;
+    }
+
   @PostMapping("/users")
   @ResponseStatus(HttpStatus.CREATED) // post user
   @ResponseBody
@@ -68,9 +85,7 @@ public class UserController {
         // list of users
         List<User> users = userService.getUsers();
 
-        int size = users.size();
-
-        for (int i = 0; i<size; i++) {
+        for (int i = 0; i<users.size(); i++) {
             if (userInput.getUsername().equals(users.get(i).getUsername())) {
                 if (userInput.getName().equals(users.get(i).getName())){ // name is password
                     return DTOMapper.INSTANCE.convertEntityToUserGetDTO(users.get(i));
