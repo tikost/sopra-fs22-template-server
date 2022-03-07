@@ -4,6 +4,7 @@ import ch.uzh.ifi.hase.soprafs22.constant.UserStatus;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * Internal User Representation
@@ -30,6 +31,9 @@ public class User implements Serializable {
 
   @Column(nullable = false, unique = true)
   private String username;
+
+    @Column(nullable = false)
+    private Date creationDate;
 
   @Column(nullable = false, unique = true)
   private String token;
@@ -60,6 +64,10 @@ public class User implements Serializable {
   public void setUsername(String username) {
     this.username = username;
   }
+
+  public Date getCreationDate() { return creationDate;}
+
+  public void setCreationDate(Date creationDate) { this.creationDate = creationDate;}
 
   public String getToken() {
     return token;
