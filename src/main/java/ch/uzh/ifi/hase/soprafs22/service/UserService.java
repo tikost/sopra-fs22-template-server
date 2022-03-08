@@ -41,7 +41,7 @@ public class UserService {
 
   public User createUser(User newUser) {
     newUser.setToken(UUID.randomUUID().toString());
-    newUser.setStatus(UserStatus.OFFLINE);
+    newUser.setStatus(UserStatus.ONLINE);
 
     checkIfUserExists(newUser);
 
@@ -78,4 +78,16 @@ public class UserService {
       throw new ResponseStatusException(HttpStatus.BAD_REQUEST, String.format(baseErrorMessage, "name", "is"));
     }
   }
+
+
+  public void setStatusInRepo(long userId, UserStatus status) {
+      List<User> users = getUsers();
+      for (int i=0; i<users.size(); i++) {
+          if (users.get(i).getId() == userId) {
+              users.get(i).setStatus((status));
+              userRepository.save(users.get(i));
+              break;
+          }
+      }
+    }
 }

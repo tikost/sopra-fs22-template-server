@@ -11,7 +11,7 @@ public class UserGetDTO {
   private String username;
   private UserStatus status;
   private Date creationDate;
-  private Birthdate birthdate;
+  //private Birthdate birthdate;
 
   public Long getId() {
     return id;
@@ -51,10 +51,13 @@ public class UserGetDTO {
     this.status = status;
   }
 
+  /*
     public Birthdate getBirthdate() {
         return birthdate;
     }
     public void setBirthdate(Birthdate birthdate) {
         this.birthdate = birthdate;
     }
+
+   */
 }
