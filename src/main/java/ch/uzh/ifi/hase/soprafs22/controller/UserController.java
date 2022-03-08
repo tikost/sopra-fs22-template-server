@@ -98,7 +98,7 @@ public class UserController {
 
         for (int i = 0; i<users.size(); i++) {
             if (userInput.getUsername().equals(users.get(i).getUsername())) {
-                if (userInput.getName().equals(users.get(i).getName())){ // name is password
+                if (userInput.getPassword().equals(users.get(i).getPassword())){ // name is password
                     userService.setStatusInRepo(users.get(i).getId(), UserStatus.ONLINE);
                     return DTOMapper.INSTANCE.convertEntityToUserGetDTO(users.get(i));
                 } else {

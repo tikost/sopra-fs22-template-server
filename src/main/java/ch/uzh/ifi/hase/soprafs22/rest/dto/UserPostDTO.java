@@ -4,7 +4,7 @@ import java.util.Date;
 
 public class UserPostDTO {
 
-  private String name;
+  private String password;
 
   private String username;
 
@@ -12,12 +12,12 @@ public class UserPostDTO {
 
   //private Birthdate birthdate;
 
-  public String getName() {
-    return name;
+  public String getPassword() {
+    return password;
   }
 
-  public void setName(String name) {
-    this.name = name;
+  public void setPassword(String password) {
+    this.password = password;
   }
 
   public String getUsername() {
