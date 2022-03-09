@@ -53,7 +53,6 @@ public class UserController {
       List<User> users = userService.getUsers();
       List<UserGetDTO> userGetDTOs = new ArrayList<>();
 
-      // convert each user to the API representation
       for (int i = 0; i < users.size(); i++) {
           if (userId == (users.get(i).getId())) {
               userGetDTOs.add(DTOMapper.INSTANCE.convertEntityToUserGetDTO(users.get(i)));
@@ -63,10 +62,10 @@ public class UserController {
   }
 
 
-    @GetMapping("/logout/{userId}")
-    @ResponseStatus(HttpStatus.OK)
-    @ResponseBody
-    public void updateStatus(@PathVariable long userId) {
+  @GetMapping("/logout/{userId}")
+  @ResponseStatus(HttpStatus.OK)
+  @ResponseBody
+  public void updateStatus(@PathVariable long userId) {
         userService.setStatusInRepo(userId, UserStatus.OFFLINE);
     }
 

@@ -43,7 +43,7 @@ public class User implements Serializable {
 
   /*
   @Column(nullable = false)
-  private Birthdate birthdate;
+  private Date birthday;
 
    */
 
@@ -92,11 +92,11 @@ public class User implements Serializable {
   }
 
   /*
-  public Birthdate getBirthdate() {
-        return birthdate;
+  public Birthday getBirthday() {
+        return birthday;
     }
-    public void setBirthdate(Birthdate birthdate) {
-        this.birthdate = birthdate;
+    public void setBirthdate(Date birthday) {
+        this.birthday = birthday;
     }
 
    */
