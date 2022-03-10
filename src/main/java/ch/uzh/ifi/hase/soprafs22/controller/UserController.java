@@ -61,14 +61,35 @@ public class UserController {
       return userGetDTOs;
   }
 
-
-  @GetMapping("/logout/{userId}")
+  @PutMapping("/logout/{userId}")
   @ResponseStatus(HttpStatus.OK)
   @ResponseBody
   public void updateStatus(@PathVariable long userId) {
         userService.setStatusInRepo(userId, UserStatus.OFFLINE);
     }
 
+    @PutMapping("/changeUsernameCheck/{userId}")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public UserGetDTO uniqueUsername(@RequestBody UserPostDTO userPostDTO, @PathVariable long userId) {
+        // convert API user to internal representation
+        User userInput = DTOMapper.INSTANCE.convertUserPostDTOtoEntity(userPostDTO);
+        System.out.println(userInput);
+        // check username
+        userService.updateUsername(userInput);
+
+        List<User> users = userService.getUsers();
+        for (int i = 0; i < users.size(); i++) {
+            if (userId == (users.get(i).getId())) {
+                User currentUser = users.get(i);
+                currentUser.setUsername(userInput.getUsername());
+                //return DTOMapper.INSTANCE.convertEntityToUserGetDTO(currentUser);
+            }
+        }
+        //if (userInput.getBirthday() != null)
+
+        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Update unsuccessful, please try later again.");
+    }
 
 
   @PostMapping("/users")
