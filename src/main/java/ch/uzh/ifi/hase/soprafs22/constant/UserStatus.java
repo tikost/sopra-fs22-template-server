@@ -1,5 +1,8 @@
 package ch.uzh.ifi.hase.soprafs22.constant;
 
-public enum UserStatus {
-  ONLINE, OFFLINE;
+public class UserStatus {
+    public static final Boolean ONLINE = true;
+    public static final Boolean OFFLINE = true;
 }
+
+

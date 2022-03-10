@@ -9,7 +9,7 @@ public class UserGetDTO {
   private Long id;
   private String password;
   private String username;
-  private UserStatus status;
+  private Boolean status;
   private Date creationDate;
   //private Date birthday;
 
@@ -35,7 +35,7 @@ public class UserGetDTO {
     this.username = username;
   }
 
-  public UserStatus getStatus() {
+  public Boolean getStatus() {
     return status;
   }
 
@@ -45,17 +45,12 @@ public class UserGetDTO {
         this.creationDate = creationDate;
     }
 
-    public void setStatus(UserStatus status) {
+    public void setStatus(Boolean status) {
     this.status = status;
   }
 
-  /*
-    public Birthday getBirthday() {
-        return birthday;
-    }
-    public void setBirthday(Date birthday) {
-        this.birthday = birthday;
-    }
+    //public Date getBirthday() { return birthday; }
 
-   */
+    //public void setBirthday(Date birthday) { this.birthday = birthday; }
+
 }

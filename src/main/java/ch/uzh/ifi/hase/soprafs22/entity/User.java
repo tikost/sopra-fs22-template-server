@@ -39,13 +39,11 @@ public class User implements Serializable {
   private String token;
 
   @Column(nullable = false)
-  private UserStatus status;
+  private Boolean status;
 
-  /*
-  @Column(nullable = false)
-  private Date birthday;
+  //@Column(nullable = false)
+  //private Date birthday;
 
-   */
 
   public Long getId() {
     return id;
@@ -83,21 +81,16 @@ public class User implements Serializable {
     this.token = token;
   }
 
-  public UserStatus getStatus() {
+  public Boolean getStatus() {
     return status;
   }
 
-  public void setStatus(UserStatus status) {
+  public void setStatus(Boolean status) {
     this.status = status;
   }
 
-  /*
-  public Birthday getBirthday() {
-        return birthday;
-    }
-    public void setBirthdate(Date birthday) {
-        this.birthday = birthday;
-    }
+  //public Date getBirthday() {return birthday;}
 
-   */
+    //public void setBirthday(Date birthday) { this.birthday = birthday;}
+
 }

@@ -80,7 +80,7 @@ public class UserService {
   }
 
 
-  public void setStatusInRepo(long userId, UserStatus status) {
+  public void setStatusInRepo(long userId, Boolean status) {
       List<User> users = getUsers();
       for (int i=0; i<users.size(); i++) {
           if (users.get(i).getId() == userId) {

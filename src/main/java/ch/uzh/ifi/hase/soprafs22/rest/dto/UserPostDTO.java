@@ -32,13 +32,7 @@ public class UserPostDTO {
 
     public void setCreationDate(Date creationDate) { this.creationDate = creationDate; }
 
-    /*
-    public Birthday getBirthday() {
-        return birthday;
-    }
-    public void setBirthday(Date birthday) {
-        this.birthday = birthday;
-    }
+    //public Date getBirthday() { return birthday;}
+    //public void setBirthday(Date birthday) {this.birthday = birthday;}
 
-     */
 }
