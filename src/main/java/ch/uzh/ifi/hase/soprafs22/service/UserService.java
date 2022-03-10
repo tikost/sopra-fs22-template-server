@@ -1,9 +1,7 @@
 package ch.uzh.ifi.hase.soprafs22.service;
 
-import ch.uzh.ifi.hase.soprafs22.constant.UserStatus;
 import ch.uzh.ifi.hase.soprafs22.entity.User;
 import ch.uzh.ifi.hase.soprafs22.repository.UserRepository;
-import org.hibernate.type.TrueFalseType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,7 +40,7 @@ public class UserService {
 
   public User createUser(User newUser) {
     newUser.setToken(UUID.randomUUID().toString());
-    newUser.setStatus(UserStatus.ONLINE);
+    newUser.setStatus(true);
 
     checkIfUserExists(newUser);
 
@@ -55,23 +53,7 @@ public class UserService {
     return newUser;
   }
 
-    public User updateUsername(User userToBeUpdated) {
 
-        User userByUsername = userRepository.findByUsername(userToBeUpdated.getUsername());
-        // check if username unique
-        String baseErrorMessage = "The username provided already exists. Therefore, the username could not be changed!";
-        if (userByUsername != null) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, baseErrorMessage);
-        }
-
-        // saves the given entity but data is only persisted in the database once
-        // flush() is called
-        userToBeUpdated = userRepository.save(userToBeUpdated);
-        userRepository.flush();
-
-        log.debug("Created Information for User: {}", userToBeUpdated);
-        return userToBeUpdated;
-    }
 
   /**
    * This is a helper method that will check the uniqueness criteria of the
@@ -98,17 +80,17 @@ public class UserService {
     }
   }
 
-    public void checkIfUsernameExists(User userToBeCreated) {
-        User userByUsername = userRepository.findByUsername(userToBeCreated.getUsername());
+    public boolean checkIfUsernameUnique(String username) {
+        User userByUsername = userRepository.findByUsername(username);
 
-        String baseErrorMessage = "The username provided already exists. Therefore, the username could not be changed!";
         if (userByUsername != null) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, baseErrorMessage);
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The username provided already exists. Therefore, the username could not be changed!");
         }
+        return true;
     }
 
 
-  public void setStatusInRepo(long userId, Boolean status) {
+  public void setStatusInRepo(long userId, boolean status) {
       List<User> users = getUsers();
       for (int i=0; i<users.size(); i++) {
           if (users.get(i).getId() == userId) {
@@ -118,6 +100,18 @@ public class UserService {
           }
       }
     }
+
+    public User getUserById(long userId) {
+        List<User> users = getUsers();
+        for (int i=0; i<users.size(); i++) {
+            if (users.get(i).getId() == userId) {
+                User user = users.get(i);
+                return user;
+            }
+        }
+        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User not found");
+    }
+
 
     public void setNewUsername(long userId, String username) {
         List<User> users = getUsers();
@@ -130,5 +124,8 @@ public class UserService {
         }
     }
 
+    public void saveUpdate(User user) {
+      userRepository.save(user);
+    }
 
 }

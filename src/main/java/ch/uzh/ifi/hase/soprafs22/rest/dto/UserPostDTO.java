@@ -10,7 +10,7 @@ public class UserPostDTO {
 
   private Date creationDate;
 
-  //private Date birthday;
+  private String birthday;
 
   public String getPassword() {
     return password;
@@ -32,7 +32,7 @@ public class UserPostDTO {
 
     public void setCreationDate(Date creationDate) { this.creationDate = creationDate; }
 
-    //public Date getBirthday() { return birthday;}
-    //public void setBirthday(Date birthday) {this.birthday = birthday;}
+    public String getBirthday() { return birthday;}
+    public void setBirthday(String birthday) {this.birthday = birthday;}
 
 }

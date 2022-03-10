@@ -1,7 +1,5 @@
 package ch.uzh.ifi.hase.soprafs22.controller;
 
-
-import ch.uzh.ifi.hase.soprafs22.constant.UserStatus;
 import ch.uzh.ifi.hase.soprafs22.entity.User;
 import ch.uzh.ifi.hase.soprafs22.rest.dto.UserGetDTO;
 import ch.uzh.ifi.hase.soprafs22.rest.dto.UserPostDTO;
@@ -61,36 +59,52 @@ public class UserController {
       return userGetDTOs;
   }
 
-  @PutMapping("/logout/{userId}")
+  @GetMapping("/logout/{userId}")
   @ResponseStatus(HttpStatus.OK)
   @ResponseBody
   public void updateStatus(@PathVariable long userId) {
-        userService.setStatusInRepo(userId, UserStatus.OFFLINE);
+        userService.setStatusInRepo(userId, false);
     }
 
-    @PutMapping("/changeUsernameCheck/{userId}")
+    @PutMapping("/updateBirthday/{userId}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public UserGetDTO uniqueUsername(@RequestBody UserPostDTO userPostDTO, @PathVariable long userId) {
+    public UserGetDTO updateBirthday(@RequestBody UserPostDTO userPostDTO, @PathVariable long userId) {
         // convert API user to internal representation
         User userInput = DTOMapper.INSTANCE.convertUserPostDTOtoEntity(userPostDTO);
-        System.out.println(userInput);
-        // check username
-        userService.updateUsername(userInput);
 
         List<User> users = userService.getUsers();
         for (int i = 0; i < users.size(); i++) {
             if (userId == (users.get(i).getId())) {
                 User currentUser = users.get(i);
-                currentUser.setUsername(userInput.getUsername());
+                currentUser.setBirthday(userInput.getBirthday());
                 //return DTOMapper.INSTANCE.convertEntityToUserGetDTO(currentUser);
             }
         }
-        //if (userInput.getBirthday() != null)
-
         throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Update unsuccessful, please try later again.");
     }
 
+    @PutMapping("/updateUser/{userId}")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public UserGetDTO updateUser(@RequestBody UserPostDTO userPostDTO, @PathVariable long userId) {
+        // convert API user to internal representation
+        User userInput = DTOMapper.INSTANCE.convertUserPostDTOtoEntity(userPostDTO);
+        User userDB = userService.getUserById(userId);
+
+        if (userInput.getUsername() != null) {
+            // check if username does not exist
+            userDB.setUsername(userInput.getUsername());
+        }
+
+        if (userInput.getBirthday() != null) {
+            userDB.setBirthday(userInput.getBirthday());
+        }
+
+        userService.saveUpdate(userDB);
+
+        return DTOMapper.INSTANCE.convertEntityToUserGetDTO(userService.getUserById(userId));
+    }
 
   @PostMapping("/users")
   @ResponseStatus(HttpStatus.CREATED) // post user
@@ -109,7 +123,7 @@ public class UserController {
     @PostMapping("/login") // check if user trying to login has correct password
     @ResponseStatus(HttpStatus.CREATED) // post user
     @ResponseBody
-    public UserGetDTO checkUser(@RequestBody UserPostDTO userPostDTO) {
+    public UserGetDTO checkLogin(@RequestBody UserPostDTO userPostDTO) {
         // convert API user to internal representation
         User userInput = DTOMapper.INSTANCE.convertUserPostDTOtoEntity(userPostDTO);
 
@@ -119,8 +133,10 @@ public class UserController {
         for (int i = 0; i<users.size(); i++) {
             if (userInput.getUsername().equals(users.get(i).getUsername())) {
                 if (userInput.getPassword().equals(users.get(i).getPassword())){ // name is password
-                    userService.setStatusInRepo(users.get(i).getId(), UserStatus.ONLINE);
-                    return DTOMapper.INSTANCE.convertEntityToUserGetDTO(users.get(i));
+                    User user = users.get(i);
+
+                    userService.setStatusInRepo(user.getId(), true);
+                    return DTOMapper.INSTANCE.convertEntityToUserGetDTO(user);
                 } else {
                     throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Password is wrong!");
                 }
