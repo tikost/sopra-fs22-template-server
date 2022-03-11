@@ -38,15 +38,16 @@ public class UserGetDTO {
     return status;
   }
 
+    public void setStatus(Boolean status) {
+        this.status = status;
+    }
+
   public Date getCreationDate() {return creationDate;}
 
     public void setCreationDate(Date creationDate) {
         this.creationDate = creationDate;
     }
 
-    public void setStatus(Boolean status) {
-    this.status = status;
-  }
 
     public String getBirthday() { return birthday; }
 

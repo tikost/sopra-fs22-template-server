@@ -3,6 +3,7 @@ package ch.uzh.ifi.hase.soprafs22.entity;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.time.Instant;
 import java.util.Date;
 
 /**
@@ -84,9 +85,7 @@ public class User implements Serializable {
     return status;
   }
 
-  public void setStatus(Boolean status) {
-    this.status = status;
-  }
+  public void setStatus(Boolean status) {this.status = status;}
 
   public String getBirthday() {return birthday;}
 

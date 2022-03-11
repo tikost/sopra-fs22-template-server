@@ -1,5 +1,6 @@
 package ch.uzh.ifi.hase.soprafs22.rest.dto;
 
+
 import java.util.Date;
 
 public class UserPostDTO {
@@ -9,6 +10,8 @@ public class UserPostDTO {
   private String username;
 
   private Date creationDate;
+
+  private Boolean status;
 
   private String birthday;
 
@@ -31,6 +34,14 @@ public class UserPostDTO {
   public Date getCreationDate() { return creationDate; }
 
     public void setCreationDate(Date creationDate) { this.creationDate = creationDate; }
+
+    public Boolean getStatus() {
+        return status;
+    }
+
+    public void setStatus(Boolean logged_in) {
+        this.status = status;
+    }
 
     public String getBirthday() { return birthday;}
     public void setBirthday(String birthday) {this.birthday = birthday;}

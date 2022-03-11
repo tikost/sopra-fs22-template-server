@@ -63,8 +63,8 @@ public class UserController {
   @ResponseStatus(HttpStatus.OK)
   @ResponseBody
   public void updateStatus(@PathVariable long userId) {
-        userService.setStatusInRepo(userId, false);
-    }
+      userService.setStatusInRepo(userId, false);
+  }
 
     @PutMapping("/updateBirthday/{userId}")
     @ResponseStatus(HttpStatus.OK)
@@ -94,7 +94,10 @@ public class UserController {
 
         if (userInput.getUsername() != null) {
             // check if username does not exist
-            userDB.setUsername(userInput.getUsername());
+           // if (userService.checkIfUsernameUnique(userInput.getUsername())) {
+                userDB.setUsername(userInput.getUsername());
+          //  }
+            //throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The username provided already exists. Therefore, the username could not be changed!");
         }
 
         if (userInput.getBirthday() != null) {
