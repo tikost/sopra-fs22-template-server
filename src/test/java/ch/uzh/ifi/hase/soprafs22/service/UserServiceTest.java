@@ -50,7 +50,7 @@ public class UserServiceTest {
     assertEquals(testUser.getPassword(), createdUser.getPassword());
     assertEquals(testUser.getUsername(), createdUser.getUsername());
     assertNotNull(createdUser.getToken());
-    assertEquals(false, createdUser.getStatus());
+    assertEquals(true, createdUser.getStatus());
   }
 
   @Test

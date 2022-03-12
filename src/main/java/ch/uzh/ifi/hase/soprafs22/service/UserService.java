@@ -109,7 +109,7 @@ public class UserService {
                 return user;
             }
         }
-        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User not found");
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "This user ID cannot be found.");
     }
 
 
@@ -124,8 +124,14 @@ public class UserService {
         }
     }
 
-    public void saveUpdate(User user) {
-      userRepository.save(user);
+    public User saveUpdate(User user) {
+
+        user = userRepository.save(user);
+        userRepository.flush();
+
+        user = getUserById(user.getId());
+
+      return user;
     }
 
 }

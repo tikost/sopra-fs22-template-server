@@ -130,7 +130,7 @@ public class UserControllerTest {
   }
 
 
-  @Test // FAILS EXPECTED 201 BUT ACTUAL 405
+  @Test
   public void getUser_IdFound() throws Exception {
         // given
         User user = new User();
@@ -153,11 +153,11 @@ public class UserControllerTest {
         // then
         mockMvc.perform(getRequest)
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id", is(user.getId().intValue())))
-                .andExpect(jsonPath("$.password", is(user.getPassword())))
-                .andExpect(jsonPath("$.username", is(user.getUsername())))
-                .andExpect(jsonPath("$.status", is(user.getStatus())))
-                .andExpect(jsonPath("$.birthday", is(user.getBirthday())));
+                .andExpect(jsonPath("$[0].id", is(user.getId().intValue())))
+                .andExpect(jsonPath("$[0].password", is(user.getPassword())))
+                .andExpect(jsonPath("$[0].username", is(user.getUsername())))
+                .andExpect(jsonPath("$[0].status", is(user.getStatus())))
+                .andExpect(jsonPath("$[0].birthday", is(user.getBirthday())));
   }
 
   @Test
@@ -176,55 +176,34 @@ public class UserControllerTest {
 
 
         // when/then -> do the request + validate the result
-        MockHttpServletRequestBuilder getRequest = get("/users/{userId}", 1L)
+        MockHttpServletRequestBuilder getRequest = get("/users/{userId}", 9L)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(asJsonString(user.getId()));
 
         // then
         mockMvc.perform(getRequest)
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id", is(user.getId().intValue())))
-                .andExpect(jsonPath("$.password", is(user.getPassword())))
-                .andExpect(jsonPath("$.username", is(user.getUsername())))
-                .andExpect(jsonPath("$.status", is(user.getStatus())))
-                .andExpect(jsonPath("$.birthday", is(user.getBirthday())));
-  }
-
-  @Test
-  public void updateUser_validInput() throws Exception {
-      // given
-      User user = new User();
-      user.setId(9L);
-      user.setPassword("Test User");
-      user.setUsername("testUsername");
-      user.setToken("1");
-      user.setStatus(true);
-/*
-      given(userService.saveUpdate(user.getId(), user.getUsername(), user.getBirthday())).willThrow(
-              new ResponseStatusException(HttpStatus.NOT_FOUND),
-              String.format("ID could not be found.")));
-
- */
-
-
-        UserPostDTO userPostDTO = new UserPostDTO();
-        userPostDTO.setPassword("Test User");
-        userPostDTO.setUsername("testUsername");
-
-
-        // when/then -> do the request + validate the result
-        MockHttpServletRequestBuilder putRequest = put("/updateUser/{userId}", 9L)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(asJsonString(userPostDTO));
-
-        // then
-        mockMvc.perform(putRequest)
                 .andExpect(status().isNotFound());
   }
 
   @Test
-  public void updateUser_invalidInput() throws Exception {
-        // given
+  public void updateUser_validInput() throws Exception {
+
+      // given
+      User user = new User();
+      user.setId(1L);
+      user.setPassword("Test User");
+      user.setUsername("testUsername");
+      user.setBirthday(new String());
+      user.setToken("1");
+      user.setStatus(true);
+/*
+      given(userService.saveUpdate(user.getId()).willThrow(
+              new ResponseStatusException(HttpStatus.NOT_FOUND,
+                      String.format("This user ID cannot be found."))
+      );
+
+ */
+
         UserPostDTO userPostDTO = new UserPostDTO();
         userPostDTO.setPassword("Test User");
         userPostDTO.setUsername("testUsername");
@@ -238,6 +217,37 @@ public class UserControllerTest {
         // then
         mockMvc.perform(putRequest)
                 .andExpect(status().isNoContent());
+  }
+
+  @Test
+  public void updateUser_invalidInput() throws Exception {
+      // given
+      User user = new User();
+      user.setId(9L);
+      user.setPassword("Test User");
+      user.setUsername("testUsername");
+      user.setBirthday(new String());
+      user.setToken("1");
+      user.setStatus(true);
+
+        UserPostDTO userPostDTO = new UserPostDTO();
+        userPostDTO.setPassword("Test User");
+        userPostDTO.setUsername("testUsername");
+
+      given(userService.saveUpdate(Mockito.any())).willThrow(
+              new ResponseStatusException(HttpStatus.NOT_FOUND,
+                      String.format("This user ID cannot be found.")));
+
+
+
+        // when/then -> do the request + validate the result
+        MockHttpServletRequestBuilder putRequest = put("/updateUser/{userId}", 1L)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(asJsonString(userPostDTO));
+
+        // then
+        mockMvc.perform(putRequest)
+                .andExpect(status().isNotFound());
   }
 
 

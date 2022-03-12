@@ -18,6 +18,10 @@ public class UserRepositoryIntegrationTest {
   @Autowired
   private UserRepository userRepository;
 
+  /* there was a problem here with the creationDate which made the test failing bc. nullable was false.
+    But creationDate is only set when registered as client. Therefore, set to nullable true.
+   */
+
   @Test
   public void findByName_success() {
     // given

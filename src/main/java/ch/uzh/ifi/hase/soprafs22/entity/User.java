@@ -32,7 +32,7 @@ public class User implements Serializable {
   @Column(nullable = false, unique = true)
   private String username;
 
-  @Column(nullable = false)
+  @Column(nullable = true)
   private Date creationDate;
 
   @Column(nullable = false, unique = true)

@@ -54,9 +54,10 @@ public class UserController {
       for (int i = 0; i < users.size(); i++) {
           if (userId == (users.get(i).getId())) {
               userGetDTOs.add(DTOMapper.INSTANCE.convertEntityToUserGetDTO(users.get(i)));
+              return userGetDTOs;
           }
       }
-      return userGetDTOs;
+      throw new ResponseStatusException(HttpStatus.NOT_FOUND, "This user ID cannot be found.");
   }
 
   @GetMapping("/logout/{userId}")
@@ -66,23 +67,6 @@ public class UserController {
       userService.setStatusInRepo(userId, false);
   }
 
-    @PutMapping("/updateBirthday/{userId}")
-    @ResponseStatus(HttpStatus.OK)
-    @ResponseBody
-    public UserGetDTO updateBirthday(@RequestBody UserPostDTO userPostDTO, @PathVariable long userId) {
-        // convert API user to internal representation
-        User userInput = DTOMapper.INSTANCE.convertUserPostDTOtoEntity(userPostDTO);
-
-        List<User> users = userService.getUsers();
-        for (int i = 0; i < users.size(); i++) {
-            if (userId == (users.get(i).getId())) {
-                User currentUser = users.get(i);
-                currentUser.setBirthday(userInput.getBirthday());
-                //return DTOMapper.INSTANCE.convertEntityToUserGetDTO(currentUser);
-            }
-        }
-        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Update unsuccessful, please try later again.");
-    }
 
     @PutMapping("/updateUser/{userId}")
     @ResponseStatus(HttpStatus.OK)
