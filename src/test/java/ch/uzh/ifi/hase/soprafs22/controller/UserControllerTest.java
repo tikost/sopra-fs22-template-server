@@ -104,13 +104,6 @@ public class UserControllerTest {
 
   @Test
   public void createUser_invalidInput_userCreated() throws Exception {
-        // given
-        User user = new User();
-        user.setId(1L);
-        user.setPassword("Test User");
-        user.setUsername("testUsername");
-        user.setToken("1");
-        user.setStatus(true);
 
         given(userService.createUser(Mockito.any())).willThrow(new ResponseStatusException(HttpStatus.CONFLICT,
                 String.format("The username provided is not unique. Therefore, the user could not be created!")));
@@ -189,9 +182,18 @@ public class UserControllerTest {
   @Test
   public void updateUser_success() throws Exception {
 
+      User user = new User();
+      user.setId(1L);
+      user.setPassword("Test User");
+      user.setUsername("testUsername");
+      user.setToken("1");
+      user.setStatus(true);
+
         UserPostDTO userPostDTO = new UserPostDTO();
         userPostDTO.setPassword("Test User");
         userPostDTO.setUsername("testUsername");
+
+      given(userService.getUserById(Mockito.anyLong())).willReturn(user);
 
 
         // when/then -> do the request + validate the result
@@ -211,7 +213,7 @@ public class UserControllerTest {
       user.setId(9L);
       user.setPassword("Test User");
       user.setUsername("testUsername");
-      user.setBirthday(new String());
+      user.setBirthday(new Date());
       user.setToken("1");
       user.setStatus(true);
 

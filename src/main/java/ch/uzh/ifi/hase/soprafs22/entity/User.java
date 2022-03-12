@@ -42,7 +42,7 @@ public class User implements Serializable {
   private Boolean status;
 
   @Column(nullable = true)
-  private String birthday;
+  private Date birthday;
 
 
   public Long getId() {
@@ -85,8 +85,8 @@ public class User implements Serializable {
 
   public void setStatus(Boolean status) {this.status = status;}
 
-  public String getBirthday() {return birthday;}
+  public Date getBirthday() {return birthday;}
 
-    public void setBirthday(String birthday) { this.birthday = birthday;}
+    public void setBirthday(Date birthday) { this.birthday = birthday;}
 
 }

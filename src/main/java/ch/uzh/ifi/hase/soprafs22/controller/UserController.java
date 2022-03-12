@@ -71,7 +71,7 @@ public class UserController {
     @PutMapping("/users/{userId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @ResponseBody
-    public UserGetDTO updateUser(@RequestBody UserPostDTO userPostDTO, @PathVariable long userId) {
+    public void updateUser(@RequestBody UserPostDTO userPostDTO, @PathVariable long userId) {
         // convert API user to internal representation
         User userInput = DTOMapper.INSTANCE.convertUserPostDTOtoEntity(userPostDTO);
         User userDB = userService.getUserById(userId);
@@ -79,7 +79,9 @@ public class UserController {
         if (userDB==null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("The user with UserId %s was not found.", userId));
         }
-
+        if (userInput.getUsername() != null) {
+                userDB.setUsername(userInput.getUsername());
+        }
 
         if (userInput.getUsername() != null) {
             userDB.setUsername(userInput.getUsername());
@@ -92,7 +94,7 @@ public class UserController {
 
         userService.saveUpdate(userDB);
 
-        return DTOMapper.INSTANCE.convertEntityToUserGetDTO(userService.getUserById(userId)); // userService.getUserById(userId)
+        //return DTOMapper.INSTANCE.convertEntityToUserGetDTO(userService.getUserById(userId)); // userService.getUserById(userId)
     }
 
   @PostMapping("/users")

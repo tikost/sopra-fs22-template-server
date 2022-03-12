@@ -13,7 +13,7 @@ public class UserPostDTO {
 
   private Boolean status;
 
-  private String birthday;
+  private Date birthday;
 
   public String getPassword() {
     return password;
@@ -43,7 +43,7 @@ public class UserPostDTO {
         this.status = status;
     }
 
-    public String getBirthday() { return birthday;}
-    public void setBirthday(String birthday) {this.birthday = birthday;}
+    public Date getBirthday() { return birthday;}
+    public void setBirthday(Date birthday) {this.birthday = birthday;}
 
 }
