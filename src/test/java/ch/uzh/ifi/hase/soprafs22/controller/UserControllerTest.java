@@ -17,6 +17,7 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 import static org.hamcrest.Matchers.hasSize;
@@ -186,23 +187,7 @@ public class UserControllerTest {
   }
 
   @Test
-  public void updateUser_validInput() throws Exception {
-
-      // given
-      User user = new User();
-      user.setId(1L);
-      user.setPassword("Test User");
-      user.setUsername("testUsername");
-      user.setBirthday(new String());
-      user.setToken("1");
-      user.setStatus(true);
-/*
-      given(userService.saveUpdate(user.getId()).willThrow(
-              new ResponseStatusException(HttpStatus.NOT_FOUND,
-                      String.format("This user ID cannot be found."))
-      );
-
- */
+  public void updateUser_success() throws Exception {
 
         UserPostDTO userPostDTO = new UserPostDTO();
         userPostDTO.setPassword("Test User");
@@ -210,7 +195,7 @@ public class UserControllerTest {
 
 
         // when/then -> do the request + validate the result
-        MockHttpServletRequestBuilder putRequest = put("/updateUser/{userId}", 1L)
+        MockHttpServletRequestBuilder putRequest = put("/users/{userId}", 1L)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(asJsonString(userPostDTO));
 
@@ -220,7 +205,7 @@ public class UserControllerTest {
   }
 
   @Test
-  public void updateUser_invalidInput() throws Exception {
+  public void updateUser_noMatchingId() throws Exception {
       // given
       User user = new User();
       user.setId(9L);
@@ -241,7 +226,7 @@ public class UserControllerTest {
 
 
         // when/then -> do the request + validate the result
-        MockHttpServletRequestBuilder putRequest = put("/updateUser/{userId}", 1L)
+        MockHttpServletRequestBuilder putRequest = put("/users/{userId}", 9L)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(asJsonString(userPostDTO));
 

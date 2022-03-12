@@ -102,27 +102,22 @@ public class UserService {
     }
 
     public User getUserById(long userId) {
-        List<User> users = getUsers();
+        User user = userRepository.findById(userId);
+        if (user != null) {
+            return user;
+        }
+        /*
         for (int i=0; i<users.size(); i++) {
             if (users.get(i).getId() == userId) {
                 User user = users.get(i);
                 return user;
             }
         }
+
+         */
         throw new ResponseStatusException(HttpStatus.NOT_FOUND, "This user ID cannot be found.");
     }
 
-
-    public void setNewUsername(long userId, String username) {
-        List<User> users = getUsers();
-        for (int i=0; i<users.size(); i++) {
-            if (users.get(i).getId() == userId) {
-                users.get(i).setUsername(username);
-                userRepository.save(users.get(i));
-                break;
-            }
-        }
-    }
 
     public User saveUpdate(User user) {
 

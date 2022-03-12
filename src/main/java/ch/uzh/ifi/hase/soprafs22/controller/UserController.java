@@ -68,21 +68,23 @@ public class UserController {
   }
 
 
-    @PutMapping("/updateUser/{userId}")
-    @ResponseStatus(HttpStatus.OK)
+    @PutMapping("/users/{userId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     @ResponseBody
     public UserGetDTO updateUser(@RequestBody UserPostDTO userPostDTO, @PathVariable long userId) {
         // convert API user to internal representation
         User userInput = DTOMapper.INSTANCE.convertUserPostDTOtoEntity(userPostDTO);
         User userDB = userService.getUserById(userId);
 
-        if (userInput.getUsername() != null) {
-            // check if username does not exist
-           // if (userService.checkIfUsernameUnique(userInput.getUsername())) {
-                userDB.setUsername(userInput.getUsername());
-          //  }
-            //throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The username provided already exists. Therefore, the username could not be changed!");
+        if (userDB==null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("The user with UserId %s was not found.", userId));
         }
+
+
+        if (userInput.getUsername() != null) {
+            userDB.setUsername(userInput.getUsername());
+        }
+
 
         if (userInput.getBirthday() != null) {
             userDB.setBirthday(userInput.getBirthday());
@@ -90,7 +92,7 @@ public class UserController {
 
         userService.saveUpdate(userDB);
 
-        return DTOMapper.INSTANCE.convertEntityToUserGetDTO(userService.getUserById(userId));
+        return DTOMapper.INSTANCE.convertEntityToUserGetDTO(userService.getUserById(userId)); // userService.getUserById(userId)
     }
 
   @PostMapping("/users")
