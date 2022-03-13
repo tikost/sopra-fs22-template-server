@@ -79,6 +79,7 @@ public class UserController {
         if (userDB==null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("The user with UserId %s was not found.", userId));
         }
+
         if (userInput.getUsername() != null) {
                 userDB.setUsername(userInput.getUsername());
         }

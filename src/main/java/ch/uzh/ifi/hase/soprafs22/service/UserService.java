@@ -80,14 +80,17 @@ public class UserService {
     }
   }
 
-    public boolean checkIfUsernameUnique(String username) {
+/*
+    public boolean checkIfUsernameNotUnique(String username) {
         User userByUsername = userRepository.findByUsername(username);
 
-        if (userByUsername != null) {
-            return false;
+        if (userByUsername == null) {
+            return true;
         }
-        return true;
+        return false;
     }
+
+ */
 
 
   public void setStatusInRepo(long userId, boolean status) {
@@ -106,15 +109,6 @@ public class UserService {
         if (user != null) {
             return user;
         }
-        /*
-        for (int i=0; i<users.size(); i++) {
-            if (users.get(i).getId() == userId) {
-                User user = users.get(i);
-                return user;
-            }
-        }
-
-         */
         throw new ResponseStatusException(HttpStatus.NOT_FOUND, "This user ID cannot be found.");
     }
 
